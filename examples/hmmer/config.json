@@ -1,0 +1,111 @@
+{
+  "batch": {
+    "accountName":"eabatch",
+    "accountKey":"hnpFLuLMj690CSaxTX1fzYKkFybl6a8D+GN/wi8VxL/dDiZz7n1gf7MV0EFpGweT469J24fPQhCsYZ0Ij7xJCA==",
+    "accountUrl":"https://eabatch.eastus.batch.azure.com"
+  },
+  "pool": {
+    "id":"PoolResistomaF8",
+    "dedicatedNodeCount":5,
+    "lowPriorityNodeCount":0,
+    "taskSlotsPerNode":8,
+    "vmSize":"Standard_F8s_v2",
+    "vmConfiguration": {
+        "imageReference": {
+            "publisher": "canonical",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts",
+            "version": "latest"
+        },
+        "nodeAgentSKUId": "batch.node.ubuntu 20.04"
+    },
+    "useEphemeralOSDisk":true,
+    "nodeStorageContainers": {
+      "mount":true,
+      "containers": [
+        {
+          "name":"host-output",
+          "blobfuseOptions":"-o auto_cache -o allow_other"
+        },
+        {
+          "name":"output",
+          "blobfuseOptions":"-o auto_cache -o allow_other"
+        },
+        {
+          "name":"soil",
+          "blobfuseOptions":"-o auto_cache -o allow_other"
+        }
+      ]
+    },
+    "nodeAutoScale": {
+      "include":false
+    },
+    "applications": {
+      "include":true,
+      "references": [
+        {
+          "id":"azcopy",
+          "version":"10.13.0"
+        }
+      ]
+    },
+    "startupTask": {
+      "include":true,
+      "command":"apt-get update && apt-get -y upgrade && apt-get -y install hmmer"
+    }
+  },
+  "job": {
+    "id":"MyJobHmmerCazymes"
+  },
+  "tasks": {
+    "addCollectionStep":100,
+    "inputs": {
+      "areBlobsInInputStorage":true,
+      "inputFileExtension":".faa",
+      "outputFileExtension":"_modelo.txt",
+      "filterOutExistingBlobInOutputStorage":true,
+      "filterOutExistingTaskInCurrentJob":true,
+      "taskSlotFormula": [],
+      "order": {
+        "by":"none"
+      }
+    },
+    "resources": {
+      "automaticInputsUpload":true,
+      "automaticScriptsUpload":true
+    },
+    "logs": {
+      "automaticUpload":true,
+      "destinationPath":"output/hmmer_cazymes/logs6/",
+      "pattern":"../std*"
+    },
+    "outputs": {
+      "automaticUpload":false
+    },
+    "command":"./cazymes/hmmer.sh 'output/split/' 'https://metagenomes.blob.core.windows.net/host-output/hmmer?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D'",
+    "retryCount":0,
+    "retentionTimeInMinutes":1000
+  },
+  "storage": {
+    "accountName":"metagenomes",
+    "accountDomain":"blob.core.windows.net",
+    "accountSASToken":"?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D",
+    "scripts": {
+      "container":"scripts",
+      "blobPrefix":"cazymes"
+    },
+    "input": {
+      "container":"soil-env",
+      "path":"output/split/",
+      "blobPrefix":""
+    },
+    "output": {
+      "container":"soil-cazymes-env",
+      "path":"output/hmmer_cazymes/",
+      "blobPrefix":""
+    }
+  },
+  "cleanup": {
+    "timeoutInMinutes":10
+  }
+}
