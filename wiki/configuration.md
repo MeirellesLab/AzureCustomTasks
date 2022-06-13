@@ -6,9 +6,7 @@
 
 The most important part of using **ACT** is the use of the configuration file. This file must contain all the details of the tasks that need to executed. This will provide the easy customization and access to most features of the Microsoft Azure Batch services.
 
-This file must contain a few required configuration string and many optional string, bellow is a description of the existing configuration string for the current version of this tool:
-
-**OBS.: The comments were added to clarify each configuration string by they are not valid in the .json format.**
+This file must contain a few required configuration strings and many optional ones. Bellow is a description of the current configuration strings of this tool:
 
 
 | Configuration attribute | Type | Description |
@@ -56,38 +54,38 @@ This file must contain a few required configuration string and many optional str
 | tasks.inputs.outputFileExtension | string | The file extension expected to be on the output blobs |
 | tasks.inputs.filterOutExistingBlobInOutputStorage | bool | Specifies if should remove from input list the blobs that already have their correspondent output blob in the output storage |
 | tasks.inputs.filterOutExistingTaskInCurrentJob | bool | Specifies if should remove from input list the blobs that already have a Task assigned with the same input |
-| tasks.inputs.taskSlotFormula | vector [string] | Used to assign an specific formula to calculate the required task slot of each Task. This formula should be written using Python syntax, can read any configuration parameter. Using $ before it's name and a dot for each hyerarchical level like '$pool.dedicatedNodeCount'. Has as builtin parameters inputName and inputSize. |
-| tasks.inputs.order | --- | --- |
-| tasks.inputs.order.by | string | --- |
-| tasks.inputs.order.type | string | --- |
-| tasks.resources | --- | --- |
-| tasks.resources.automaticInputsUpload | bool | --- |
-| tasks.resources.automaticScriptsUpload | bool | --- |
-| tasks.logs | --- | --- |
-| tasks.logs.automaticUpload | bool | --- |
-| tasks.logs.destinationPath | string | --- |
-| tasks.outputs | --- | --- |
-| tasks.outputs.automaticUpload | bool | --- |
-| tasks.command | string | --- |
-| tasks.retryCount | integer | --- |
-| tasks.retentionTimeInMinutes | integer | --- |
+| tasks.inputs.taskSlotFormula | vector [string] | Used to assign an specific formula to calculate the required task slot of each Task. This formula should be written using Python syntax, can read any configuration parameter. Using $ before it's name and a dot for each hyerarchical level like '$pool.dedicatedNodeCount'. Has as builtin parameters inputName and inputSize |
+| tasks.inputs.order | --- | Used to define the sorting order of the input list |
+| tasks.inputs.order.by | string | Attribute to use to sort the list. Possible values are: **name, size or slot count**, the **default value is to order by name** |
+| tasks.inputs.order.type | string | Used to define the sorting method, possible values are **asc or desc**, the **default value is asc** |
+| tasks.resources | --- | Used to define if resources should be copied to the Task node automatically |
+| tasks.resources.automaticInputsUpload | bool | Define if the input blobs should be copied to the Task working directory |
+| tasks.resources.automaticScriptsUpload | bool | Define if the script blobs should be copied to the Task working directory |
+| tasks.logs | --- | Used to define what to do with log files after the Task goes to **completed state** |
+| tasks.logs.automaticUpload | bool | Define if logs are to be copied out of the Tasks when they finish |
+| tasks.logs.destinationPath | string |  Define the destination path where to copy the logs from Tasks when they finish |
+| tasks.outputs | --- | Used to define what to do with the output after the Task goes to **successfully completed  state** |
+| tasks.outputs.automaticUpload | bool | Define if ouptut blobs are to be copied out of the Tasks when they finish |
+| tasks.command | string | Define the Task commandLine |
+| tasks.retryCount | integer | Define the retry count of the Tasks |
+| tasks.retentionTimeInMinutes | integer | Define the time in minutes to retain the Task files in the compute node |
 | storage | --- | --- |
-| storage.accountName | string | --- |
-| storage.accountDomain | string | --- |
-| storage.accountSASToken | string | --- |
-| storage.scripts | --- | --- |
-| storage.scripts.container | string | --- |
-| storage.scripts.blobPrefix | string | --- |
-| storage.input | --- | --- |
-| storage.input.container | string | --- |
-| storage.input.path | string | --- |
-| storage.input.blobPrefix | string | --- |
-| storage.output | --- | --- |
-| storage.output.container | string | --- |
-| storage.output.path | string | --- |
-| storage.output.blobPrefix | string | --- |
-| cleanup | --- | --- |
-| cleanup.timeoutInMinutes | integer | --- |
+| storage.accountName | string | The name of the storage account you are going to use |
+| storage.accountDomain | string | The storage account domain you are going to use |
+| storage.accountSASToken | string | The storage account SAS Token you are going to use |
+| storage.scripts | --- | Used to define where are the scripts in the storage |
+| storage.scripts.container | string | Define the container name where are the scripts |
+| storage.scripts.blobPrefix | string | Define the blobPrefix of the scripts in the specified storage container |
+| storage.input | --- | Used to define where are the inputs in the storage |
+| storage.input.container | string | Define the container name where are the inputs |
+| storage.input.path | string | Define the path of the inputs in the specified storage container |
+| storage.input.blobPrefix | string | Define the blobPrefix of the inputs in the specified storage container |
+| storage.output | --- | Used to define where are the outputs in the storage |
+| storage.output.container | string | Define the container name where are the outputs |
+| storage.output.path | string | Define the path of the outputs in the specified storage container |
+| storage.output.blobPrefix | string | Define the blobPrefix of the outputs in the specified storage container |
+| cleanup | --- | Used when call the free resources argument |
+| cleanup.timeoutInMinutes | integer | Defines the time-out in minutes for the clean up proccess. Terminate the proccess after this time, if it doesn't finish before that |
 
 
 [BACK HOME](https://github.com/MeirellesLab/AzureCustomTasks/tree/main/wiki/home.md)
