@@ -14,7 +14,7 @@ This file must contain a few required configuration strings and many optional on
 | batch.accountName | string | The name of the batch account on your Microsoft Azure Subscription to be used |
 | batch.accountKey | string | The corresponding batch account key, found in the Azure portal |
 | batch.accountUrl | string | The corresponding batch account url, found in the Azure portal |
-| pool | --- | --- |
+| pool | --- | These configuration parameters come from the [PoolAddParameter Class](https://docs.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.pooladdparameter?view=azure-python) |
 | pool.id | string | The ID that will be used to name the pool of compute nodes created |
 | pool.dedicatedNodeCount | integer | The number of dedicated compute nodes to be created in this pool |
 | pool.lowPriorityNodeCount | integer | The number of low priority compute nodes to be created in this pool |
@@ -46,7 +46,7 @@ This file must contain a few required configuration strings and many optional on
 | pool.startupTask.command* | string | The command line of the startup task |
 | job | --- | | Used to include the job configurations |
 | job.id | string | The Job ID |
-| tasks | --- | Used to include the tasks configurations |
+| tasks | --- | Used to include the tasks configurations from [TaskAddParameter Class](https://docs.microsoft.com/en-us/python/api/azure-batch/azure.batch.models.taskaddparameter?view=azure-python) |
 | tasks.addCollectionStep | integer | The number of tasks to be included in each iteration |
 | tasks.inputs | --- | --- |
 | tasks.inputs.areBlobsInInputStorage | bool | Specifies if the inputs are to be collected from the input storage, if FALSE an input file should be provided in the execution arguments |
@@ -54,7 +54,7 @@ This file must contain a few required configuration strings and many optional on
 | tasks.inputs.outputFileExtension* | string | The file extension expected to be on the output blobs |
 | tasks.inputs.filterOutExistingBlobInOutputStorage* | bool | Specifies if should remove from input list the blobs that already have their correspondent output blob in the output storage |
 | tasks.inputs.filterOutExistingTaskInCurrentJob | bool | Specifies if should remove from input list the blobs that already have a Task assigned with the same input |
-| tasks.inputs.taskSlotFormula | vector [string] | Used to assign an specific formula to calculate the required task slot of each Task. This formula should be written using Python syntax, can read any configuration parameter. Using $ before it's name and a dot for each hyerarchical level like '$pool.dedicatedNodeCount'. Has as builtin parameters inputName and inputSize |
+| tasks.inputs.requiredSlotFormula | vector [string] | Used to assign an specific formula to calculate the required task slot of each Task. This formula should be written using Python syntax, can read any configuration parameter. Using $ before it's name and a dot for each hyerarchical level like '$pool.dedicatedNodeCount'. Has as builtin parameters inputName and inputSize |
 | tasks.inputs.order* | --- | Used to define the sorting order of the input list |
 | tasks.inputs.order.by* | string | Attribute to use to sort the list. Possible values are: **name, size or slot count**, the **default value is to order by name** |
 | tasks.inputs.order.type* | string | Used to define the sorting method, possible values are **asc or desc**, the **default value is asc** |

@@ -20,9 +20,9 @@ or if you have Python3 set as default python command, use:
 pip install -r requirements.txt
 ```
 
-For more detail, see [Installing ACT page](https://github.com/MeirellesLab/AzureCustomTasks/tree/main/wiki/home.md#installation)
+For more detail, see [Installing ACT page](wiki/home.md#installation)
 
-To see the complete list of ACT running options, check out our [wiki](https://github.com/MeirellesLab/AzureCustomTasks/blob/main/wiki/home.md) or use:
+To see the complete list of ACT running options, check out our [wiki](wiki/home.md) or use:
 
 ```bash
 python3 azure_custom_tasks.py -h

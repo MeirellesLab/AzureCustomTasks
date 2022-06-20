@@ -105,7 +105,7 @@ class ConfigurationReader():
 
     def createFunctionCalculateTaskSlots(self):
         """
-        Create the user defined function, from the taskSlotFormula in the
+        Create the user defined function, from the requiredSlotFormula in the
         configuration file, to calculate the required slot count for
         each task, according to the input name and input size.
         The default value is 1.
@@ -116,13 +116,13 @@ class ConfigurationReader():
         :rtype: <function>
         :return: the user defined function to calculate task required slot
         """
-        # get the statements from the configured taskSlotFormula
+        # get the statements from the configured requiredSlotFormula
         statements = '\n'.join([ '    ' + line for line in
-                                self.config.tasks.inputs.taskSlotFormula])
+                                self.config.tasks.inputs.requiredSlotFormula])
 
         # if statements contain the string 'self' or 'config' raise an exception
         if('self' in statements or 'config' in statements):
-            raise ValueError("Can't use 'self' or 'config' in taskSlotFormula!")
+            raise ValueError("Can't use 'self' or 'config' in requiredSlotFormula!")
 
         # replaces the symbol '$' with a call to a configured attribute
         statements = statements.replace('$','config.')
