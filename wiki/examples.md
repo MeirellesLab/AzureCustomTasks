@@ -1,5 +1,5 @@
 
-[BACK HOME](https://github.com/MeirellesLab/AzureCustomTasks/tree/main/wiki/home.md)
+[BACK HOME](home.md)
 
 
 # ACT Examples
@@ -7,12 +7,12 @@
 
 This set of examples show the capabilities of the ACT software in a scenario of Bioinformatics analysis.
 
-Before you start, you need to create or already have an account in the Microsoft Azure Portal. If you don't have one, you can follow this [link](https://portal.azure.com/) to create a free subscription for 30 days. Then log into the Portal and do the following steps:
+Before you start, you need to create or already have an account in the [Microsoft Azure Portal](https://portal.azure.com/). Then log into the Portal and do the following steps:
 
 * Create a Storage Account, your containers (input/output/scripts can be in the same container) and a SAS Token to access them.
 * Create a Batch Account and link your Storage Account to it.
 * Fill the configuration file with your data, specifically **all batch and storage parameters**.
-* Put the example script and input blobs on the defined container, path, and with the desired directory/name prefix, accordingly with what you filled in the configuration.
+* Upload the example script and input blobs to the defined container and path, with the designated directory/name prefix, accordingly with what you filled in the configuration.
 
 ## 1. PRODIGAL - Parallelizing Gene Prediction Tasks From Large-Scale Metagenomic Data
 
@@ -57,4 +57,4 @@ requiredSlots = calculatedSlots if (input_size > maxTaskSlotSize) else 1
 ```
 
 
-[BACK HOME](https://github.com/MeirellesLab/AzureCustomTasks/tree/main/wiki/home.md)
+[BACK HOME](home.md)

@@ -1,10 +1,10 @@
 
-[BACK HOME](https://github.com/MeirellesLab/AzureCustomTasks/tree/main/wiki/home.md)
+[BACK HOME](home.md)
 
 
 # THE config.json FILE
 
-The most important part of using **ACT** is the use of the configuration file. This file must contain all the details of the tasks that need to executed. This will provide the easy customization and access to most features of the Microsoft Azure Batch services.
+The most important part of using **ACT** is the use of the configuration file. This file must contain all the details of the tasks that need to executed. This will provide the easy customization and access to most features of the Microsoft Azure Batch Services.
 
 This file must contain a few required configuration strings and many optional ones. Bellow is a description of the current configuration strings of this tool:
 
@@ -27,37 +27,37 @@ This file must contain a few required configuration strings and many optional on
 | pool.vmConfiguration.imageReference.version | string | The VM Image version string |
 | pool.vmConfiguration.nodeAgentSKUId | string | The VM Image Agent SKU ID to be used |
 | pool.useEphemeralOSDisk | bool | If the VM should use ephemeral OS Disks, can only be used if there are only dedicated nodes |
-| pool.nodeStorageContainers | --- | Used to mount storage containers in the compute nodes |
+| pool.nodeStorageContainers | --- | Used to mount storage containers in the compute nodes.  It’s important to note that if different Tasks use one blob in the same container, this can cause synchronizing problems that have to be considered, for more details see the [blobfusion specifications](https://github.com/Azure/azure-storage-fuse/). |
 | pool.nodeStorageContainers.mount | bool | Specifies if the nodes should mount the following storage containers |
-| pool.nodeStorageContainers.containers | vector | A list with all the containers to be mounted |
-| pool.nodeStorageContainers.containers.name | string | The storage container name |
-| pool.nodeStorageContainers.containers.blobfuseOptions | string | The blobfuse options to the container mount procedure |
+| pool.nodeStorageContainers.containers* | vector | A list with all the containers to be mounted |
+| pool.nodeStorageContainers.containers.name* | string | The storage container name |
+| pool.nodeStorageContainers.containers.blobfuseOptions* | string | The blobfuse options to the container mount procedure |
 | pool.nodeAutoScale | --- | Used to include auto scale property to the pool |
 | pool.nodeAutoScale.include | bool | Specifies if the node should use an auto scale formula |
-| pool.nodeAutoScale.evaluationInterval | integer | The autoscale evaluation interval |
-| pool.nodeAutoScale.formula | vector [string] | A list of strings representing the autoscale formula |
+| pool.nodeAutoScale.evaluationInterval* | integer | The autoscale evaluation interval |
+| pool.nodeAutoScale.formula* | vector [string] | A list of strings representing the autoscale formula |
 | pool.applications | --- | Used to include applications on the compute nodes |
 | pool.applications.include | bool | Specifies if the compute nodes should install the applications |
-| pool.applications.references | vector | A list of references to the applications to be installed |
-| pool.applications.references.id | string | The application ID |
-| pool.applications.references.version | string | The application version |
+| pool.applications.references* | vector | A list of references to the applications to be installed |
+| pool.applications.references.id* | string | The application ID |
+| pool.applications.references.version* | string | The application version |
 | pool.startupTask | --- | Used to include a Startup Task to the compute nodes |
 | pool.startupTask.include | bool | Specifies if the compute nodes should include an startup task |
-| pool.startupTask.command | string | The command line of the startup task |
+| pool.startupTask.command* | string | The command line of the startup task |
 | job | --- | | Used to include the job configurations |
 | job.id | string | The Job ID |
 | tasks | --- | Used to include the tasks configurations |
 | tasks.addCollectionStep | integer | The number of tasks to be included in each iteration |
 | tasks.inputs | --- | --- |
 | tasks.inputs.areBlobsInInputStorage | bool | Specifies if the inputs are to be collected from the input storage, if FALSE an input file should be provided in the execution arguments |
-| tasks.inputs.inputFileExtension | string | The file extension of the blobs to be used as inputs |
-| tasks.inputs.outputFileExtension | string | The file extension expected to be on the output blobs |
-| tasks.inputs.filterOutExistingBlobInOutputStorage | bool | Specifies if should remove from input list the blobs that already have their correspondent output blob in the output storage |
+| tasks.inputs.inputFileExtension* | string | The file extension of the blobs to be used as inputs |
+| tasks.inputs.outputFileExtension* | string | The file extension expected to be on the output blobs |
+| tasks.inputs.filterOutExistingBlobInOutputStorage* | bool | Specifies if should remove from input list the blobs that already have their correspondent output blob in the output storage |
 | tasks.inputs.filterOutExistingTaskInCurrentJob | bool | Specifies if should remove from input list the blobs that already have a Task assigned with the same input |
 | tasks.inputs.taskSlotFormula | vector [string] | Used to assign an specific formula to calculate the required task slot of each Task. This formula should be written using Python syntax, can read any configuration parameter. Using $ before it's name and a dot for each hyerarchical level like '$pool.dedicatedNodeCount'. Has as builtin parameters inputName and inputSize |
-| tasks.inputs.order | --- | Used to define the sorting order of the input list |
-| tasks.inputs.order.by | string | Attribute to use to sort the list. Possible values are: **name, size or slot count**, the **default value is to order by name** |
-| tasks.inputs.order.type | string | Used to define the sorting method, possible values are **asc or desc**, the **default value is asc** |
+| tasks.inputs.order* | --- | Used to define the sorting order of the input list |
+| tasks.inputs.order.by* | string | Attribute to use to sort the list. Possible values are: **name, size or slot count**, the **default value is to order by name** |
+| tasks.inputs.order.type* | string | Used to define the sorting method, possible values are **asc or desc**, the **default value is asc** |
 | tasks.resources | --- | Used to define if resources should be copied to the Task node automatically |
 | tasks.resources.automaticInputsUpload | bool | Define if the input blobs should be copied to the Task working directory |
 | tasks.resources.automaticScriptsUpload | bool | Define if the script blobs should be copied to the Task working directory |
@@ -88,4 +88,4 @@ This file must contain a few required configuration strings and many optional on
 | cleanup.timeoutInMinutes | integer | Defines the time-out in minutes for the clean up proccess. Terminate the proccess after this time, if it doesn't finish before that |
 
 
-[BACK HOME](https://github.com/MeirellesLab/AzureCustomTasks/tree/main/wiki/home.md)
+[BACK HOME](home.md)

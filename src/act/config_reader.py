@@ -128,11 +128,11 @@ class ConfigurationReader():
         statements = statements.replace('$','config.')
 
         # the template that will be compiled with the configured formulas
-        template = ["def calculateTaskRequiredSlots(input_name, input_size):",
+        template = ["def calculateTaskRequiredSlots(inputName, inputSize):",
                     "    requiredSlots = 1",
-                    "%s",
+                    "{}",
                     "    return requiredSlots"]
-        code = '\n'.join(template) % statements
+        code = '\n'.join(template).format(statements)
 
         # allowed builtin functions that can be used in the formulas
         safe_list = ['abs', 'all', 'any', 'bin', 'bool', 'chr', 'float', 'str',

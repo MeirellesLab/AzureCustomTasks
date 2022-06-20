@@ -1,8 +1,8 @@
 {
   "batch": {
-    "accountName":"eabatch",
-    "accountKey":"hnpFLuLMj690CSaxTX1fzYKkFybl6a8D+GN/wi8VxL/dDiZz7n1gf7MV0EFpGweT469J24fPQhCsYZ0Ij7xJCA==",
-    "accountUrl":"https://eabatch.eastus.batch.azure.com"
+    "accountName":"actbatch",
+    "accountKey":"Y9/qqLxA8TweD9Rf6fpKeqCPUlcyZ81Mv4jeUnr8nCOssSggocm7rFETozu3I43m64xVKNtCpFogFVsdaaw2GA==",
+    "accountUrl":"https://actbatch.eastus.batch.azure.com"
   },
   "pool": {
     "id":"PoolResistomaF16_1",
@@ -80,26 +80,26 @@
     "outputs": {
       "automaticUpload":false
     },
-    "command":"./prodigal.sh '' 'https://metagenomes.blob.core.windows.net/host-output/prodigal/plant-host-env?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D'",
+    "command":".scripts/prodigal.sh '' 'https://metagenomes.blob.core.windows.net/host-output/prodigal/plant-host-env?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D'",
     "retryCount":0,
     "retentionTimeInMinutes":1000
   },
   "storage": {
-    "accountName":"metagenomes",
+    "accountName":"actexamples",
     "accountDomain":"blob.core.windows.net",
-    "accountSASToken":"?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D",
+    "accountSASToken":"?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-06-20T07:45:40Z&st=2022-06-19T23:45:40Z&spr=https&sig=I1yHVgE0UvC9v6orUqUpsOEFpWpi4tJOxrhiHRrnWkU%3D",
     "scripts": {
-      "container":"scripts",
-      "blobPrefix":"prodigal"
+      "container":"mydata",
+      "blobPrefix":"scripts/prodigal"
     },
     "input": {
-      "container":"human-host-env",
-      "path":"feces",
+      "container":"mydata",
+      "path":"inputs/",
       "blobPrefix":""
     },
     "output": {
-      "container":"host-output",
-      "path":"prodigal/human-host-env2/",
+      "container":"mydata",
+      "path":"output/",
       "blobPrefix":""
     }
   },
