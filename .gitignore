@@ -8,6 +8,7 @@ __pycache__/
 
 # User defined
 statistics/
+wiki/
 
 # Distribution / packaging
 .Python
