@@ -4,60 +4,63 @@ Version: 1.0
 Created: 2021/11/15
 
 Azure custom tasks - Act v1.0
-usage: python3 azure_custom_tasks.py [-j JSON] [-i INPUT] [-xslcedrwfyvh] [-sI] [-sO] [-sS] [-sT] [-dI]
 
-Uses Azure Batch Account to execute Batch Tasks based on customized parameters
-contained in the configurations file. This file specifies the script
-to be executed, the Storage Containers to use, the string preffix of the
-blobs to be used as inputs and many other parameters. These parameters are used
-to create the Batch Pool, Job and Tasks to run asynchronously on the Microsoft
-Azure cloud environment.
+usage: python3 azure_custom_tasks.py  [-j JSON] [-i INPUT] [-xslcedrwfyvh] [-sI] [-sO] [-sS] [-sT] [-dI]
 
-optional arguments:
-  -h, --help            Show this help message and exit.
-  -j  JSON              Use the specified JSON file as the configuration file.
+Azure Custom Tasks - ACT v1.0 - Uses Azure Batch Account to execute Batch Tasks
+based on customized parameters contained in the configurations file. This file
+specifies the script to be executed, the Storage Containers to use, the string
+preffix of the blobs to be used as inputs and many other parameters. These
+parameters are used to create the Batch Pool, Job and Tasks to run
+asynchronously on the Microsoft Azure cloud environment.
+
+options:
+  -h, --help            show this help message and exit
+  -j JSON, --json JSON  use the specified JSON file as the configuration file.
                         This file must be in the .json format and contain all
-                        the required configuration strings. If you don’t provide
-                        this parameter, the default value is to consider the
-                        existence of a file named config.json in the current
-                        working directory. If the JSON file doesn’t exist, the
+                        the required configuration strings. If you do not
+                        provide this parameter, the default value is to consider
+                        the existence of a file named config.json in the current
+                        working directory. If the JSON file does not exist, the
                         program finishes with an error message. You cannot run
-                        ACT without a configuration file
-  -x, --exec            Start the Batch Service, Pool, Job and Tasks, execution
+                        ACT without a configuration file.
+  -x, --exec            start the Batch Service, Pool, Job and Tasks, execution
                         with the parameters specified in the configuration file.
-                        If you don't supply any argument (other then -j and -i)
+                        If you do not supply any argument (other than -j and -i)
                         this is the default behavior of ACT.
-  -i, --input FILE      Use the strings in the INPUT file as inputs for the
+  -i INPUTS, --input INPUTS
+                        use the strings in the INPUTS file as inputs for the
                         Tasks. It is expected that each line of this file
                         contains one input description separated by comma, (1)
                         the input string itself, (2) the input size, and (3) the
                         required computing slots for this input, only the first
                         parameter is required, the other parameters are optional
-                        with default value 0 and 1 respectively.
-  -s, --show            Show the debug information about the current execution:
-                        inputs, outputs, scripts and Tasks' commands.
-  -sI, --show-inputs    Show the corresponding blobs from configured input.
-  -sO, --show-outputs   Show the corresponding blobs from configured output.
-  -sS, --show-scripts   Show the corresponding blobs from configured scripts.
-  -sT, --show-tasks     Show the Tasks' commandLine for each Task.
-  -dI, --delete-inputs  Delete the corresponding blobs from configured input.
-  -l, --list            List Tasks by their states.
-  -c, --count           Count Tasks by their states.
-  -d, --disable         Disable the current Job and all associated Tasks,
+                        with default value 0 and 1, respectively.
+  -s, --show            show the debug information about the current execution:
+                        inputs, outputs, scripts and Tasks’ commands.
+  -sI, --show-inputs    show the corresponding blobs from the configured input.
+  -sO, --show-outputs   show the corresponding blobs from the configured output.
+  -sS, --show-scripts   show the corresponding blobs from the configured scripts.
+  -sT, --show-tasks     show the Tasks’ commandLine for each Task.
+  -dI, --delete-inputs  delete the corresponding blobs from configured input.
+  -l, --list            list Tasks by their states.
+  -c, --count           count Tasks by their states.
+  -d, --disable         disable the current Job and all associated Tasks,
                         returning the Tasks that are running to the end of the
                         execution queue. Cannot add new Tasks while the Job is
                         disabled.
-  -e, --enable          Enable the current Job and all associated Tasks,
-                        restarting the Task's allocation to the execution queue.
-                        execution of the tasks in the queue.
-  -r, --reactivate	    Reactivate all failed Tasks to requeue them.
-  -w, --wait            Wait all Tasks to complete while showing the current
+  -e, --enable          enable the current Job and all associated Tasks,
+                        restarting the Task’s allocation to the execution queue
+                        and the execution of the Tasks in the queue.
+  -r, --reactivate      reactivate all failed Tasks to re-queue them.
+  -w, --wait            wait all tasks to complete while showing the current
                         progress.
-  -f, --free            Terminate the batch and free its resources (deleting all
-                        Pools, Jobs and Tasks from the Batch Account).
-  -y, --yes             Include this to --free command to confirm deletion
+  -f, --free            terminate the batch and free its resources (deleting all
+                        Pools, Jobs and Tasks from the Batch Account)
+  -y, --yes             include this to --free command to confirm deletion
                         without requiring user confirmation.
-  -v, --version         Show ACT version number and exit.
+  -v, --version         show ACT version number and exit.
+
 """
 ################################################################################
 #   IMPORTANT!!!
@@ -411,9 +414,8 @@ class AzureBatchUtils:
             input_file = input_list[idx][0]
             input_slots = input_list[idx][2]
             taskId = f'Task{idx+self.start_id:0{self.tasks_id_len}}'
-            command = f'/bin/bash -c "{self.config.tasks.command} ' \
-                      f'\'{input_file}\'"'
-
+            command = f"{self.config.tasks.command} '{input_file}' "\
+                      f"{self.config.tasks.commandSuffix}"
             if self.config.argument.showTasks:
                 print(f'{taskId} command: {command}')
 
@@ -522,6 +524,7 @@ class AzureBatchUtils:
         if execute_tasks:
             print()
             print('All tasks created!!')
+            time.sleep(10)
             print()
 
 
@@ -530,16 +533,17 @@ class AzureBatchUtils:
         Wait for all tasks in the configured job to reach the Completed state,
         printing progress information.
         """
-        dot = ''
+        time.sleep(30)
         total_tasks, completed_tasks = self.count_job_tasks()
+        progress = ''
 
         while (completed_tasks < total_tasks):
             time.sleep(2)
             total_tasks, completed_tasks = self.count_job_tasks()
             # Print progress
-            dot = '.' if (len(dot) > 4) else dot+'.'
+            progress = '.' if (len(dot) > 4) else progress+'.'
             print(f'Progress {completed_tasks:03d}/{total_tasks:03d} ' \
-                  f'{dot: <10}', end='\r')
+                  f'{progress: <10}', end='\r')
         print()
         print()
         print("All tasks reached the 'Completed' state")
@@ -669,6 +673,14 @@ class ConfigurationReader():
             hook = lambda d: SimpleNamespace(**d)
             self.config = json.load(data, object_hook=hook)
 
+        # set default values
+        if not hasattr(self.config.tasks.inputs, 'taskSlotFormula'):
+            self.config.tasks.inputs.taskSlotFormula = []
+        if not hasattr(self.config.tasks, 'commandSuffix'):
+            self.config.tasks.commandSuffix = ""
+        if not hasattr(self.config.tasks.inputs, 'filterOutExistingTaskInCurrentJob'):
+            self.config.tasks.inputs.filterOutExistingTaskInCurrentJob = False
+
         # update the configuration with new attributes for storage sas url
         i = self.config.storage.input
         o = self.config.storage.output
@@ -744,21 +756,21 @@ class ConfigurationReader():
         statements = statements.replace('$','config.')
 
         # the template that will be compiled with the configured formulas
-        template = ["def calculateTaskRequiredSlots(inputName, inputSize):",
+        template = ["def calculateTaskRequiredSlots(input_name, input_size):",
                     "    requiredSlots = 1",
                     "{}",
                     "    return requiredSlots"]
         code = '\n'.join(template).format(statements)
 
         # allowed builtin functions that can be used in the formulas
-        safe_list = ['abs', 'all', 'any', 'bin', 'bool', 'chr', 'float', 'str',
-                     'hash', 'int', 'len', 'max', 'min', 'ord', 'range', 'sum',
-                     'reversed', 'round', 'sorted', 'filter', 'format']
-        builtins = globals()['__builtins__']
-        my_global_scope = dict([ (k, builtins[k]) for k in safe_list ])
+        safe_list = {'abs':abs, 'all':all, 'any':any, 'bin':bin, 'bool':bool,
+                     'chr':chr, 'filter':filter, 'format':format, 'float':float,
+                     'hash':hash, 'int':int, 'len':len, 'max':max, 'min':min,
+                     'ord':ord, 'range':range, 'reversed':reversed, 'str':str,
+                     'round':round, 'sorted':sorted, 'sum':sum}
 
-        # remove any other builtin function from the used scope
-        my_global_scope['__builtins__'] = None
+        my_global_scope = {}
+        my_global_scope['__builtins__'] = safe_list
         # include a copy of the configured attributes in the used scope
         my_global_scope['config'] = copy.deepcopy(self.config)
 
@@ -861,9 +873,18 @@ class ConfigurationReader():
                 item = input_dict[item_name]
                 item_size,item_slot = 0,1
                 if len(item) > 1:
-                    item_size = item[1]
+                    item_size = int(item[1])
                 if len(item) > 2:
                     item_slot = item[2]
+                else:
+                    # calculate task slots required for this input blob size
+                    item_slot = self.calculateTaskSlots(item_name, item_size)
+                    if (item_slot > self.config.pool.taskSlotsPerNode):
+                        print(f'File "{item_name}" is too big (requires '\
+                              f'{item_slot} slots)! Cannot be executed '\
+                              f'with current configuration.')
+                        continue
+
                 input_list.append((item_name, item_size, item_slot))
         return input_list
 
@@ -980,7 +1001,7 @@ class InputHandler:
     def __init__(self):
         pass
 
-    def getArguments():
+    def getArguments(self):
         """
         Parse the script arguments and return them as a SimpleNamespace object
         built up from attributes parsed out of the command line.
@@ -990,10 +1011,10 @@ class InputHandler:
         """
         # Create argument parser
         parser = argparse.ArgumentParser(description='Azure Custom Tasks - ACT'\
-                                         ' v1.0\nUses Azure Batch Account to'\
+                                         ' v1.0 - Uses Azure Batch Account to'\
                                          ' execute Batch Tasks based on'\
                                          ' customized parameters contained in'\
-                                         ' the configurations file. This file'\
+                                         ' the configuration file. This file'\
                                          ' specifies the script to be executed,'\
                                          ' the Storage Containers to use, the'\
                                          ' string preffix of the blobs to be'\
@@ -1007,78 +1028,80 @@ class InputHandler:
                                          ' [-i INPUT] [-xslcedrwfyvh] [-sI]'\
                                          ' [-sO] [-sS] [-sT] [-dI]')
         # Optional arguments
-        parser.add_argument('-j', '--json', metavar='JSON', help='Use the'\
+        parser.add_argument('-j', '--json', metavar='JSON', help='use the'\
                             ' specified JSON file as the configuration file.'\
                             ' This file must be in the .json format and contain'\
                             ' all the required configuration strings. If you'\
-                            ' don’t provide this parameter, the default value'\
+                            ' do not provide this parameter, the default value'\
                             ' is to consider the existence of a file named'\
                             ' config.json in the current working directory. If'\
-                            ' the JSON file doesn’t exist, the program'\
+                            ' the JSON file does not exist, the program'\
                             ' finishes with an error message. You cannot run'\
                             ' ACT without a configuration file.',
                             default='config.json', type=argparse.FileType('r'))
-        parser.add_argument('-x', '--exec', help='Start the Batch Service,'\
+        parser.add_argument('-x', '--exec', help='start the Batch Service,'\
                             ' Pool, Job and Tasks, execution with the'\
                             ' parameters specified in the configuration file.'\
-                            ' If you don’t supply any argument (other then -j'\
+                            ' If you do not supply any argument (other than -j'\
                             ' and -i this is the default behavior of ACT.',
                             action='store_true')
-        parser.add_argument('-i', '--input', metavar='INPUTS', help='Use the'\
-                            ' strings in the INPUT file as inputs for the'\
+        parser.add_argument('-i', '--input', metavar='INPUTS', help='use the'\
+                            ' strings in the INPUTS file as inputs for the'\
                             ' Tasks. It is expected that each line of this'\
                             ' file contains one input description separated by'\
                             ' comma, (1) the input string itself, (2) the'\
                             ' input size, and (3) the required computing slots'\
                             ' for this input, only the first parameter is'\
                             ' required, the other parameters are optional with'\
-                            ' default value 0 and 1 respectively.',
+                            ' default value 0 and 1, respectively.',
                             type=argparse.FileType('r'))
-        parser.add_argument('-s', '--show', help='Show the debug information'\
+        parser.add_argument('-s', '--show', help='show the debug information'\
                             ' about the current execution: inputs, outputs,'\
                             ' scripts and Tasks’ commands.', action='store_true')
-        parser.add_argument('-sI', '--show-inputs', help='Show the corresponding'\
-                            ' blobs from configured input.', action='store_true')
-        parser.add_argument('-sO', '--show-outputs', help='Show the'\
-                            ' corresponding blobs from configured output.',
+        parser.add_argument('-sI', '--show-inputs', help='show the corresponding'\
+                            ' blobs from the configured input.', action='store_true')
+        parser.add_argument('-sO', '--show-outputs', help='show the'\
+                            ' corresponding blobs from the configured output.',
                             action='store_true')
-        parser.add_argument('-sS', '--show-scripts', help='Show the'\
-                            ' corresponding blobs from configured scripts.',
+        parser.add_argument('-sS', '--show-scripts', help='show the'\
+                            ' corresponding blobs from the configured scripts.',
                             action='store_true')
-        parser.add_argument('-sT', '--show-tasks', help='Show the Tasks’'\
+        parser.add_argument('-sT', '--show-tasks', help='show the Tasks’'\
                             ' commandLine for each Task.', action='store_true')
-        parser.add_argument('-dI', '--delete-inputs', help='Delete the'\'
+        parser.add_argument('-dI', '--delete-inputs', help='delete the'\
                             ' corresponding blobs from configured input.',
                             action='store_true')
-        parser.add_argument('-l', '--list', help='List Tasks by their states.',
+        parser.add_argument('-l', '--list', help='list Tasks by their states.',
                             action='store_true')
-        parser.add_argument('-c', '--count', help='Count Tasks by their states.',
+        parser.add_argument('-c', '--count', help='count Tasks by their states.',
                             action='store_true')
-        parser.add_argument('-d', '--disable', help='Disable the current Job'\
+        parser.add_argument('-d', '--disable', help='disable the current Job'\
                             ' and all associated Tasks, returning the Tasks'\
                             ' that are running to the end of the execution'\
                             ' queue. Cannot add new Tasks while the Job is'\
                             ' disabled.', action='store_true')
-        parser.add_argument('-e', '--enable', help='Enable the current Job and'\
+        parser.add_argument('-e', '--enable', help='enable the current Job and'\
                             ' all associated Tasks,restarting the Task’s'\
                             ' allocation to the execution queue and the'\
                             ' execution of the Tasks in the queue.',
                             action='store_true')
-        parser.add_argument('-r', '--reactivate', help='Reactivate all failed' \
-                            ' Tasks to requeue them.', action='store_true')
-        parser.add_argument('-w', '--wait', help='Wait all tasks to complete'\
+        parser.add_argument('-r', '--reactivate', help='reactivate all failed' \
+                            ' Tasks to re-queue them.', action='store_true')
+        parser.add_argument('-w', '--wait', help='wait all tasks to complete'\
                             ' while showing the current progress.',
                             action='store_true')
-        parser.add_argument('-f', '--free', help='Terminate the batch and free'\
+        parser.add_argument('-f', '--free', help='terminate the batch and free'\
                             ' its resources (deleting all Pools, Jobs and'\
                             ' Tasks from the Batch Account)',
                             action='store_true')
-        parser.add_argument('-y','--yes', help='Include this to --free command'\
+        parser.add_argument('-y','--yes', help='include this to --free command'\
                             ' to confirm deletion without requiring user'\
                             ' confirmation.', action='store_true')
         # Print version
-        parser.add_argument('-v', '--version', action='Show ACT version number'\
-                            ' and exit.',version='Azure Custom Tasks - Act v1.0')
+        parser.add_argument('-v', '--version', help='show ACT version number'\
+                            ' and exit.', action='version',
+                            version='Azure Custom Tasks - Act v1.0')
+
         args = parser.parse_args()
 
         args.execute = False
@@ -1107,7 +1130,7 @@ class InputHandler:
         return args
 
 
-    def query_yes_no(question, default=None):
+    def query_yes_no(self, question, default=None):
         """
         Prompts the user for yes/no input, displaying the specified question text.
 
@@ -1149,11 +1172,12 @@ class AzureCustomTasks:
     def __init__(self):
         pass
 
-    def main():
+    def main(self):
         """
         Create the classes to run using the specified configuration with the
         arguments received.
         """
+
         start_time = datetime.datetime.now().replace(microsecond=0)
         print('Starting Custom Azure Batch Script')
         print(f'Start time: {start_time}')

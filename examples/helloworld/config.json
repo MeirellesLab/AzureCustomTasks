@@ -1,0 +1,83 @@
+{
+  "batch": {
+    "accountName":"PLACE_YOUR_BATCH_ACCOUNT_NAME_HERE",
+    "accountKey":"PLACE_YOUR_BATCH_ACCOUNT_KEY_HERE",
+    "accountUrl":"PLACE_YOUR_BATCH_ACCOUNT_URL_HERE"
+  },
+  "pool": {
+    "id":"PoolHelloWorld",
+    "dedicatedNodeCount":1,
+    "lowPriorityNodeCount":0,
+    "taskSlotsPerNode":2,
+    "vmSize":"Standard_A1_v2",
+    "vmConfiguration": {
+        "imageReference": {
+            "publisher": "canonical",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts",
+            "version": "latest"
+        },
+        "nodeAgentSKUId": "batch.node.ubuntu 20.04"
+    },
+    "useEphemeralOSDisk":false,
+    "nodeStorageContainers": {
+      "mount":false
+    },
+    "nodeAutoScale": {
+      "include":false
+    },
+    "applications": {
+      "include":false
+    },
+    "startupTask": {
+      "include":false
+    }
+  },
+  "job": {
+    "id":"MyJobHelloWorld"
+  },
+  "tasks": {
+    "addCollectionStep":10,
+    "inputs": {
+      "areBlobsInInputStorage":false
+    },
+    "resources": {
+      "automaticInputsUpload":false,
+      "automaticScriptsUpload":false
+    },
+    "logs": {
+      "automaticUpload":true,
+      "destinationPath":"logs/helloworld/",
+      "pattern":"../std*"
+    },
+    "outputs": {
+      "automaticUpload":false
+    },
+    "command":"bash -c \"echo -n 'Hello world from the ACT Hello world example! on ' && echo ",
+    "commandSuffix":"\"",
+    "retryCount":0,
+    "retentionTimeInMinutes":1000
+  },
+  "storage": {
+    "accountName":"PLACE_YOUR_STORAGE_ACCOUNT_NAME_HERE",
+    "accountDomain":"PLACE_YOUR_STORAGE_ACCOUNT_DOMAIN_HERE",
+    "accountSASToken":"PLACE_YOUR_STORAGE_SAS_TOKEN_HERE",
+    "scripts": {
+      "container":"mydata",
+      "blobPrefix":"scripts/"
+    },
+    "input": {
+      "container":"mydata",
+      "path":"inputs/",
+      "blobPrefix":""
+    },
+    "output": {
+      "container":"mydata",
+      "path":"output/",
+      "blobPrefix":""
+    }
+  },
+  "cleanup": {
+    "timeoutInMinutes":10
+  }
+}
