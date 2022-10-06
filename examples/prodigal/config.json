@@ -80,7 +80,8 @@
     "outputs": {
       "automaticUpload":false
     },
-    "command":".scripts/prodigal.sh '' 'https://metagenomes.blob.core.windows.net/host-output/prodigal/plant-host-env?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D'",
+    "command":"bash -c \".scripts/prodigal.sh '' 'https://metagenomes.blob.core.windows.net/host-output/prodigal/plant-host-env?sv=2020-08-04&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-01-25T02:01:37Z&st=2022-01-24T18:01:37Z&spr=https&sig=5SsKP%2B9JzuDJS764h4jcgQMINyKWW5TG188Bp2oJ%2FcU%3D'",
+    "commandSuffix":"\"",
     "retryCount":0,
     "retentionTimeInMinutes":1000
   },

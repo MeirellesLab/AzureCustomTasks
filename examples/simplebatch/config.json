@@ -1,0 +1,83 @@
+{
+  "batch": {
+    "accountName":"actexamples",
+    "accountKey":"U4ZiII4zDzUr/taDm3u1oxd2m9T7pFkEcyFVRXTdAT425Pnz7VTc1obOGAxqDusMc0CF+BJzdbk5+ABaz+eQoA==",
+    "accountUrl":"https://actexamples.eastus.batch.azure.com"
+  },
+  "pool": {
+    "id":"PoolSimpleBatch",
+    "dedicatedNodeCount":1,
+    "lowPriorityNodeCount":0,
+    "taskSlotsPerNode":2,
+    "vmSize":"Standard_A1_v2",
+    "vmConfiguration": {
+        "imageReference": {
+            "publisher": "canonical",
+            "offer": "0001-com-ubuntu-server-focal",
+            "sku": "20_04-lts",
+            "version": "latest"
+        },
+        "nodeAgentSKUId": "batch.node.ubuntu 20.04"
+    },
+    "useEphemeralOSDisk":false,
+    "nodeStorageContainers": {
+      "mount":false
+    },
+    "nodeAutoScale": {
+      "include":false
+    },
+    "applications": {
+      "include":false
+    },
+    "startupTask": {
+      "include":false
+    }
+  },
+  "job": {
+    "id":"MyJobSimpleBatch"
+  },
+  "tasks": {
+    "addCollectionStep":10,
+    "inputs": {
+      "areBlobsInInputStorage":false
+    },
+    "resources": {
+      "automaticInputsUpload":false,
+      "automaticScriptsUpload":false
+    },
+    "logs": {
+      "automaticUpload":true,
+      "destinationPath":"logs/simplebatch/",
+      "pattern":"../std*"
+    },
+    "outputs": {
+      "automaticUpload":false
+    },
+    "command":"bash -c \"./my_script.sh ",
+    "commandSuffix":"\"",
+    "retryCount":0,
+    "retentionTimeInMinutes":1000
+  },
+  "storage": {
+    "accountName":"actexamples",
+    "accountDomain":"blob.core.windows.net",
+    "accountSASToken":"?sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupiyx&se=2022-11-05T13:46:43Z&st=2022-10-05T05:46:43Z&spr=https&sig=pAjbQ5IvfNFJwY%2BkGjvBYD53kOVnuvVZZircedq5Ym8%3D",
+    "scripts": {
+      "container":"mydata",
+      "blobPrefix":"scripts/"
+    },
+    "input": {
+      "container":"mydata",
+      "path":"inputs/",
+      "blobPrefix":""
+    },
+    "output": {
+      "container":"mydata",
+      "path":"output/",
+      "blobPrefix":""
+    }
+  },
+  "cleanup": {
+    "timeoutInMinutes":10
+  }
+}
