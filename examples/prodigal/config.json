@@ -5,11 +5,11 @@
     "accountUrl":"https://actbatch.eastus.batch.azure.com"
   },
   "pool": {
-    "id":"PoolResistomaF16_1",
-    "dedicatedNodeCount":5,
-    "lowPriorityNodeCount":12,
-    "taskSlotsPerNode":16,
-    "vmSize":"Standard_F16s_v2",
+    "id":"PoolProdigalExample",
+    "dedicatedNodeCount":2,
+    "lowPriorityNodeCount":0,
+    "taskSlotsPerNode":2,
+    "vmSize":"Standard_D2s_v3",
     "vmConfiguration": {
         "imageReference": {
             "publisher": "canonical",
@@ -24,7 +24,7 @@
       "mount":true,
       "containers": [
         {
-          "name":"host-output",
+          "name":"outputs",
           "blobfuseOptions":"-o auto_cache -o allow_other"
         }
       ]
@@ -33,7 +33,7 @@
       "include":false
     },
     "applications": {
-      "include":true,
+      "include":false,
       "references": [
         {
           "id":"azcopy",
@@ -43,7 +43,7 @@
     },
     "startupTask": {
       "include":true,
-      "command":"apt-get update && apt-get -y upgrade && apt-get -y install prodigal hmmer"
+      "command":"apt-get update && apt-get -y upgrade && apt-get -y install prodigal"
     }
   },
   "job": {
