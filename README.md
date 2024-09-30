@@ -8,7 +8,7 @@ This tool is perfect for promptly taking advantage of this batch cloud environme
 
 ## Getting Started
 
-ACT uses Python v3.6 and requires installing some libraries from the [Azure SDK for Python](https://github.com/Azure/azure-sdk-for-python). To do so, use the command bellow:
+ACT requires Python v3.10 or a later version and some libraries of the [Azure SDK for Python](https://github.com/Azure/azure-sdk-for-python). To install them use the command bellow:
 
 ```bash
 pip3 install -r requirements.txt

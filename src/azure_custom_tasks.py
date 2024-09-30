@@ -37,11 +37,11 @@ options:
                         parameter is required, the other parameters are optional
                         with default value 0 and 1, respectively.
   -s, --show            show the debug information about the current execution:
-                        inputs, outputs, scripts and Tasks’ commands.
+                        inputs, outputs, scripts and Tasks' commands.
   -sI, --show-inputs    show the corresponding blobs from the configured input.
   -sO, --show-outputs   show the corresponding blobs from the configured output.
   -sS, --show-scripts   show the corresponding blobs from the configured scripts.
-  -sT, --show-tasks     show the Tasks’ commandLine for each Task.
+  -sT, --show-tasks     show the Tasks' commandLine for each Task.
   -dI, --delete-inputs  delete the corresponding blobs from configured input.
   -l, --list            list Tasks by their states.
   -c, --count           count Tasks by their states.
@@ -50,7 +50,7 @@ options:
                         execution queue. Cannot add new Tasks while the Job is
                         disabled.
   -e, --enable          enable the current Job and all associated Tasks,
-                        restarting the Task’s allocation to the execution queue
+                        restarting the Task's allocation to the execution queue
                         and the execution of the Tasks in the queue.
   -r, --reactivate      reactivate all failed Tasks to re-queue them.
   -w, --wait            wait all tasks to complete while showing the current
