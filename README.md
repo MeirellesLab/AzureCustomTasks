@@ -26,13 +26,13 @@ python3 azure_custom_tasks.py -h
 
 ## Features
 
-* **Centralize all configuration parameters in a JSON file**: Managing the creation of the Azure Batch resources (Pool, Job, and Tasks), instead of making multiple calls to the Microsoft Azure API for each configuration programmatically. Making it fast and easy to run your routines.
-* **Contain most important Microsoft Azure Batch Service features**: Providing uncomplicated access to many important commands, speeding up usage of those features.
-* **Automatically mount storage containers to compute nodes**: The pool configuration can specify the storage containers to be mounted in the compute nodes and Tasks can read inputs and write outputs to it.
-* **Multiple options to define the Task input**: Inputs can be blobs in a storage container or strings in a file. We can also filter them by existing Tasks and/or by existing output. Allowing the user to customize the new Tasks creation for the precise need.
-* **Custom function to calculate required computing slots for Tasks**: It’s possible to define, in the configuration file, a function to calculate the number of required computing slots for each Task, based on the input name and/or size. Optimizing resource management and reducing costs.
-* **Built-in debug**: To show execution details (inputs/outputs/scripts/task commands) before, and while, running.
-* **Built-in custom log**: To help keep track of the Task events and profile the execution of the Task’s commands.
+* **Centralized Configuration**: Simplifies deployment by centralizing parameters for Azure Batch resources (Pools, Jobs, Tasks) in a single JSON file, reducing the need for multiple API calls.
+* **Comprehensive Azure Batch Support**: Provides streamlined access to essential Azure Batch features, simplifying task management and configuration.
+* **Automatic Storage Mounting**: Automatically mounts Azure storage containers to compute nodes, facilitating direct reading and writing of input/output data.
+* **Flexible Input Options**: Supports input data as storage blobs or local file strings, with customizable filtering based on task criteria.
+* **Custom Resource Management**: Allows users to define functions in the configuration file to calculate required computing slots for tasks, optimizing resource usage and reducing operational costs.
+* **Built-in Debugging**: Displays detailed information about task execution (inputs, outputs, scripts, and commands) for troubleshooting.
+* **Custom Logging**: Provides detailed logs for monitoring task progress and profiling execution efficiency.
 
 
 ## More Information
