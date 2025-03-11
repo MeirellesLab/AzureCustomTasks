@@ -62,7 +62,7 @@ ACT follows a modular and layered architecture, where each component is designed
 - **ConfigurationReader**: Loads configuration files and sets up authentication.
 - **AzureBatchUtils**: Interfaces with Azure Batch to execute jobs and manage resources.
 
-![Figure 1. UML class diagram of Azure Custom Tasks (ACT)](ACT_UML.png){height="600pt"}
+![Figure 1. UML class diagram of Azure Custom Tasks (ACT)](ACT_UML.png){height="300pt"}
 
 ## Usage Information and Examples
 
